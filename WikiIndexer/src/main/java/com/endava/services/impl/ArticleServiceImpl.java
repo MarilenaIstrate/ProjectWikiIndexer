@@ -1,7 +1,8 @@
-package com.endava.services;
+package com.endava.services.impl;
 
 import com.endava.model.ArticleEntity;
 import com.endava.repository.ArticleRepository;
+import com.endava.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by mistrate on 8/11/2016.
  */
 @Service
-public class TitleCheckServiceImpl {
+public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     ArticleRepository articleRepository;

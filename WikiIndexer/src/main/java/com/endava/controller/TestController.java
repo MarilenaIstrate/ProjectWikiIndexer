@@ -2,16 +2,13 @@ package com.endava.controller;
 
 import com.endava.model.ArticleEntity;
 import com.endava.model.WordEntity;
-import com.endava.repository.ArticleRepository;
 import com.endava.services.MultiTitlesParser;
 import com.endava.services.TextParserService;
-import com.endava.services.TitleCheckServiceImpl;
+import com.endava.services.impl.ArticleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,7 +24,7 @@ public class TestController {
     TextParserService textParserService;
 
     @Autowired
-    TitleCheckServiceImpl titleCheckService;
+    ArticleServiceImpl titleCheckService;
 
     @RequestMapping(method = RequestMethod.GET)
     public void print() {

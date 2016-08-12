@@ -5,9 +5,7 @@ import com.endava.model.WordEntity;
 import com.endava.services.CommonWordsCheckerService;
 import com.endava.services.RequestService;
 import com.endava.services.TextParserService;
-import com.endava.services.TitleCheckServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -17,7 +15,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Time;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -35,7 +32,7 @@ public class TextParserServiceImpl implements TextParserService {
     CommonWordsCheckerService commonWordsCheckerService;
 
     @Autowired
-    TitleCheckServiceImpl titleCheckService;
+    ArticleServiceImpl titleCheckService;
 
     public ArticleEntity getTopWords(String title) throws IOException, ParserConfigurationException, SAXException {
 
@@ -43,10 +40,10 @@ public class TextParserServiceImpl implements TextParserService {
         title = title.replaceAll("\\s+", "_");
 
         /* Check if the article is in the database */
-        /*ArticleEntity articleEntity = titleCheckService.checkTitle(title);
+        ArticleEntity articleEntity = titleCheckService.checkTitle(title);
         if (articleEntity != null) {
             return articleEntity;
-        }*/
+        }
 
         /* Get input stream containing the article body */
         InputStream inputStream = requestService.requestTitle(title);
@@ -84,7 +81,7 @@ public class TextParserServiceImpl implements TextParserService {
 
             time = System.nanoTime() - time;
             ///*
-            ArticleEntity articleEntity;
+            //ArticleEntity articleEntity;
             //*/
             /* Save the result */
             articleEntity = new ArticleEntity();
@@ -104,7 +101,7 @@ public class TextParserServiceImpl implements TextParserService {
             articleEntity.setWordList(wordEntities);
 
             /* Save the results in the database */
-            //titleCheckService.insertArticle(articleEntity);
+            titleCheckService.insertArticle(articleEntity);
             return articleEntity;
         }
         return null;
