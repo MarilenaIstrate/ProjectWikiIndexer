@@ -26,6 +26,7 @@ public class CommonWordsCheckerServiceImpl implements CommonWordsCheckerService 
         while ((word = reader.readLine()) != null) {
             skipWordsSet.add(word);
         }
+        reader.close();
     }
 
     public boolean isCommonWord(String word) {
