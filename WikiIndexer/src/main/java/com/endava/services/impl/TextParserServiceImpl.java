@@ -1,9 +1,13 @@
 package com.endava.services.impl;
 
+import com.endava.model.ArticleEntity;
+import com.endava.model.WordEntity;
 import com.endava.services.CommonWordsCheckerService;
 import com.endava.services.RequestService;
 import com.endava.services.TextParserService;
+import com.endava.services.TitleCheckServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -13,6 +17,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Time;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -29,8 +34,16 @@ public class TextParserServiceImpl implements TextParserService {
     @Autowired
     CommonWordsCheckerService commonWordsCheckerService;
 
-    public void getTopWords(String title) throws IOException, ParserConfigurationException, SAXException {
+    @Autowired
+    TitleCheckServiceImpl titleCheckService;
 
+    public ArticleEntity getTopWords(String title) throws IOException, ParserConfigurationException, SAXException {
+
+        ArticleEntity articleEntity = titleCheckService.checkTitle(title);
+        if (articleEntity != null) {
+            return articleEntity;
+        }
+        long time = System.nanoTime();
         InputStream inputStream = requestService.requestTitle(title);
         if (inputStream != null) {
             /* Get contents of the 'extract' tag */
@@ -54,13 +67,30 @@ public class TextParserServiceImpl implements TextParserService {
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                             (e1, e2) -> e1, LinkedHashMap::new));
 
-            /* Print top 10 words */
+            time = System.nanoTime() - time;
+
+            articleEntity = new ArticleEntity();
+            articleEntity.setTitle(title);
+            articleEntity.setTime(time);
+
+            /* Add top 10 words to ArticleEntity*/
+            List<WordEntity> wordEntities = new ArrayList<>();
             int count = 0;
             for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
-                System.out.println(entry);
+                WordEntity wordEntity = new WordEntity();
+                wordEntity.setWord(entry.getKey());
+                wordEntity.setNrAppar(entry.getValue());
+                wordEntity.setArticleEntity(articleEntity);
+
+                wordEntities.add(wordEntity);
                 if (++count == 10)
                     break;
             }
+            articleEntity.setWordList(wordEntities);
+
+            titleCheckService.insertArticle(articleEntity);
+            return articleEntity;
         }
+        return null;
     }
 }
