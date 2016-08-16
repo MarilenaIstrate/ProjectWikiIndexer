@@ -1,5 +1,6 @@
 package com.endava.services;
 
+import com.endava.dto.ArticleDTO;
 import com.endava.model.ArticleEntity;
 import org.xml.sax.SAXException;
 
@@ -14,5 +15,5 @@ public interface TextParserService {
      * @throws ParserConfigurationException
      * @throws SAXException
      */
-    ArticleEntity getTopWords(String title) throws IOException, ParserConfigurationException, SAXException;
+    ArticleDTO getTopWords(String title) throws IOException, ParserConfigurationException, SAXException;
 }

@@ -1,8 +1,11 @@
 package com.endava.threads;
 
+import com.endava.dto.ArticleDTO;
 import com.endava.model.ArticleEntity;
 import com.endava.model.WordEntity;
 import com.endava.services.TextParserService;
+import com.sun.xml.internal.bind.v2.runtime.output.SAXOutput;
+import com.sun.xml.internal.stream.util.ThreadLocalBufferAllocator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -12,30 +15,25 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 
-public class TextParserThread extends Thread {
+public class TextParserThread implements Callable<ArticleDTO> {
 
     private String title;
     private TextParserService textParserService;
-    private List<ArticleEntity> articleEntityes;
 
-    public TextParserThread(String title, TextParserService textParserService, List<ArticleEntity> articleEntityes) {
+    public TextParserThread(String title, TextParserService textParserService) {
         this.title = title;
         this.textParserService = textParserService;
-        this.articleEntityes = articleEntityes;
     }
 
     @Override
-    public void run() {
+    public ArticleDTO call() throws Exception {
         try {
-            System.out.println("Thread " + Thread.currentThread().getId());
-            if (textParserService == null) {
-                System.out.println("TextParser is null");
-            }
-            ArticleEntity articleEntity = textParserService.getTopWords(title);
-            articleEntityes.add(articleEntity);
+            return textParserService.getTopWords(title);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 }
