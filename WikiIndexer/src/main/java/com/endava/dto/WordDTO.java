@@ -1,5 +1,7 @@
 package com.endava.dto;
 
+import com.endava.model.WordEntity;
+
 /**
  * Created by mistrate on 8/16/2016.
  */

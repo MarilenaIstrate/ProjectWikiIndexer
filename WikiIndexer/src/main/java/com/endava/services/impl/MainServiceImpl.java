@@ -5,19 +5,15 @@ import com.endava.model.WordEntity;
 import com.endava.services.MainService;
 import com.endava.services.MultiTitlesParser;
 import com.endava.services.TextParserService;
-import com.endava.threads.ArticleEntityList;
 import com.endava.threads.TextParserThread;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ExceptionDepthComparator;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -44,9 +40,7 @@ public class MainServiceImpl implements MainService {
 
     public ArticleEntity getWordsFromFile(String fileName) {
         ExecutorService executorService = Executors.newFixedThreadPool(4);
-        List<Integer> intList = Collections.synchronizedList(new ArrayList<>()) ;
         try {
-            List<Thread> threads = new ArrayList<>();
             /* Get ArticleEntity from every article */
             List<Future<ArticleEntity>> articleEntities = multiTitlesParser.getTitles(fileName).stream()
                     .map(title -> {
@@ -54,14 +48,7 @@ public class MainServiceImpl implements MainService {
                     })
                     .collect(Collectors.toList());
             executorService.shutdown();
-            /*        .map(s -> {
-                        try {
-                            return textParserService.getTopWords(s);
-                        } catch (Exception e) {
-                            return null;
-                        }
-                    })
-                    .collect(Collectors.toList());*/
+
             List<ArticleEntity> articleEntityList = articleEntities.stream()
                     .map(entity -> {
                         try {

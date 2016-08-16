@@ -1,5 +1,6 @@
 package com.endava.dto;
 
+import com.endava.model.ArticleEntity;
 import com.endava.model.WordEntity;
 
 import java.util.List;
