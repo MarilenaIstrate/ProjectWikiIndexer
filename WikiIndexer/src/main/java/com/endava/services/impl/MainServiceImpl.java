@@ -5,6 +5,7 @@ import com.endava.model.WordEntity;
 import com.endava.services.MainService;
 import com.endava.services.MultiTitlesParser;
 import com.endava.services.TextParserService;
+import com.endava.threads.ArticleEntityList;
 import com.endava.threads.TextParserThread;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,16 +42,28 @@ public class MainServiceImpl implements MainService {
 
     public ArticleEntity getWordsFromFile(String fileName) {
         ExecutorService executorService = Executors.newFixedThreadPool(4);
+        List<ArticleEntity> articleEntities = Collections.synchronizedList(new ArrayList<>());
+        List<Integer> intList = Collections.synchronizedList(new ArrayList<>()) ;
         try {
+            List<Thread> threads = new ArrayList<>();
             /* Get ArticleEntity from every article */
             //List<String> titles = multiTitlesParser.getTitles(fileName);
-            List<ArticleEntity> articleEntities = Collections.synchronizedList(new ArrayList<>());
             multiTitlesParser.getTitles(fileName).stream()
                     .forEach(title -> {
-                        executorService.execute(new TextParserThread(title, textParserService, articleEntities));
+                        Thread textParserThread = new Thread(new TextParserThread(title, textParserService, articleEntities, intList));
+                        threads.add(textParserThread);
+                        textParserThread.run();
+                        //executorService.submit(new TextParserThread(title, textParserService, articleEntities, intList));
                     });
-            executorService.shutdown();
-            while (!executorService.isShutdown()) {}
+            //executorService.shutdown();
+            //while (!executorService.isShutdown()) {}
+            threads.stream().forEach(thread -> {
+                try {
+                    thread.join();
+                } catch (Exception e) { }
+            });
+            System.out.println("Got " + articleEntities);
+            System.out.println("Got int " + intList);
             /*        .map(s -> {
                         try {
                             return textParserService.getTopWords(s);

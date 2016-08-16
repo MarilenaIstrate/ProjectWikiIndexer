@@ -95,7 +95,6 @@ public class TextParserServiceImpl implements TextParserService {
 
             /* Add time to ArticleEntity */
             time = System.nanoTime() - time;
-            articleEntity.setTime(time);
             /* Add top 10 words to ArticleEntity */
             articleEntity.setWordList(wordEntities);
 

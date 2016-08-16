@@ -25,7 +25,7 @@ public class ArticleEntity {
     @Column(name = "category")
     private String category;
 
-    @OneToMany(targetEntity = WordEntity.class, mappedBy = "articleEntity", cascade = {CascadeType.PERSIST})
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = WordEntity.class, mappedBy = "articleEntity", cascade = {CascadeType.PERSIST})
     private List<WordEntity> wordList;
 
     public int getAid() {
