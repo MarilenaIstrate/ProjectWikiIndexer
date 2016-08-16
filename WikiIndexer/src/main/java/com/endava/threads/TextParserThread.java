@@ -14,35 +14,25 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 
-public class TextParserThread implements Runnable {
+public class TextParserThread implements Callable<ArticleEntity> {
 
     private String title;
     private TextParserService textParserService;
-    private List<ArticleEntity> articleEntities;
-    private List<Integer> integerList;
 
-    public TextParserThread(String title, TextParserService textParserService, List<ArticleEntity> articleEntities, List<Integer> intList) {
+    public TextParserThread(String title, TextParserService textParserService) {
         this.title = title;
         this.textParserService = textParserService;
-        this.articleEntities = articleEntities;
-        this.integerList = intList;
     }
 
     @Override
-    public void run() {
+    public ArticleEntity call() throws Exception {
         try {
-            System.out.println("Thread " + Thread.currentThread().getId());
-            if (textParserService == null) {
-                System.out.println("TextParser is null");
-            }
-            ArticleEntity articleEntity = textParserService.getTopWords(title);
-            System.out.println("Adding " + articleEntity);
-            articleEntities.add(articleEntity);
-            integerList.add(Thread.currentThread().hashCode());
-            System.out.println("Added " + articleEntities);
+            return textParserService.getTopWords(title);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 }
