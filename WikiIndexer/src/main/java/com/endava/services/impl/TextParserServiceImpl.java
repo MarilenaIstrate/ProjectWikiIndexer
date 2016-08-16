@@ -32,7 +32,7 @@ public class TextParserServiceImpl implements TextParserService {
     CommonWordsCheckerService commonWordsCheckerService;
 
     @Autowired
-    ArticleServiceImpl titleCheckService;
+    ArticleServiceImpl articleService;
 
     public ArticleEntity getTopWords(String title) throws IOException, ParserConfigurationException, SAXException {
 
@@ -40,7 +40,7 @@ public class TextParserServiceImpl implements TextParserService {
         title = title.replaceAll("\\s+", "_");
 
         /* Check if the article is in the database */
-        ArticleEntity articleEntityDB = titleCheckService.checkTitle(title);
+        ArticleEntity articleEntityDB = articleService.checkTitle(title);
         if (articleEntityDB != null) {
             return articleEntityDB;
         }
@@ -105,10 +105,8 @@ public class TextParserServiceImpl implements TextParserService {
             //}
             articleEntity.setWordList(wordEntities);
 
-            System.out.println("1: " + articleEntity);
             /* Save the results in the database */
-            titleCheckService.insertArticle(articleEntity);
-            System.out.println("2: " + articleEntity);
+            articleService.insertArticle(articleEntity);
             return articleEntity;
         }
         return null;

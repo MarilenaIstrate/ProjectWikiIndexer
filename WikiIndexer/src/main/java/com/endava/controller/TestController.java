@@ -30,7 +30,6 @@ public class TestController {
     public void print() {
         try {
             List<String> titles = multiTitlesParser.getTitles("titles.txt");
-            System.out.println(titles);
             List<ArticleEntity> articleEntities = titles.stream()
                                     .map(s -> {
                                         try {
