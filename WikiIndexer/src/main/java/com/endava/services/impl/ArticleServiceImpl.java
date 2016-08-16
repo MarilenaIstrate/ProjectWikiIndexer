@@ -23,6 +23,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Transactional
     public void insertArticle(ArticleEntity articleEntity){
+    	System.out.println("Inside: " + articleEntity);
         articleRepository.save(articleEntity);
     }
 }

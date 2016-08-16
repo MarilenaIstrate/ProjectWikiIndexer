@@ -30,6 +30,7 @@ public class TestController {
     public void print() {
         try {
             List<String> titles = multiTitlesParser.getTitles("titles.txt");
+            System.out.println(titles);
             List<ArticleEntity> articleEntities = titles.stream()
                                     .map(s -> {
                                         try {
@@ -38,7 +39,8 @@ public class TestController {
                                         return null;
                                     })
                                     .collect(Collectors.toList());
-            List<WordEntity> wordEntities = articleEntities.stream()
+            System.out.println(articleEntities);
+            /*List<WordEntity> wordEntities = articleEntities.stream()
                     .flatMap(e -> e.getWordList().stream())
                     .sorted(new Comparator<WordEntity>() {
                         @Override
@@ -52,7 +54,7 @@ public class TestController {
                     .map(ArticleEntity::getTime)
                     .reduce(0l, (a, b) -> a + b);
             System.out.println(wordEntities);
-            System.out.println("took " + totalTime + "ms");
+            System.out.println("took " + totalTime + "ms");*/
         } catch (Exception e) {
             e.printStackTrace();
         }

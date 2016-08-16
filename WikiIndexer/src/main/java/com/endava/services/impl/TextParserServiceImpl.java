@@ -40,15 +40,15 @@ public class TextParserServiceImpl implements TextParserService {
         title = title.replaceAll("\\s+", "_");
 
         /* Check if the article is in the database */
-        ArticleEntity articleEntity = titleCheckService.checkTitle(title);
-        if (articleEntity != null) {
-            return articleEntity;
+        ArticleEntity articleEntityDB = titleCheckService.checkTitle(title);
+        if (articleEntityDB != null) {
+            return articleEntityDB;
         }
 
         /* Get input stream containing the article body */
         InputStream inputStream = requestService.requestTitle(title);
         if (inputStream != null) {
-            /* Start timer */
+        	/* Start timer */
             long time = System.nanoTime();
             /* Get contents of the 'extract' tag */
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
@@ -62,6 +62,10 @@ public class TextParserServiceImpl implements TextParserService {
             Map<String, Integer> wordsMap = Arrays.stream(words).map(w -> w.toLowerCase())
                     .filter(w -> w.length() > 0 && w != "" && !commonWordsCheckerService.isCommonWord(w))
                     .collect(groupingBy(Function.identity(), summingInt(e -> 1)));
+            
+            ArticleEntity articleEntity = new ArticleEntity();
+            articleEntity.setTitle(title);
+            
             /* Make ordered map */
             List<WordEntity> wordEntities = wordsMap.entrySet().stream().
                     sorted(Map.Entry.comparingByValue(new Comparator<Integer>() {
@@ -75,17 +79,18 @@ public class TextParserServiceImpl implements TextParserService {
                         WordEntity wordEntity = new WordEntity();
                         wordEntity.setWord(entry.getKey());
                         wordEntity.setNrAppar(entry.getValue());
+                        wordEntity.setArticleEntity(articleEntity);
                         return wordEntity;
                     })
                     .collect(Collectors.toList());
-
+            
+            //System.out.println(wordEntities);
+            
             time = System.nanoTime() - time;
             ///*
             //ArticleEntity articleEntity;
             //*/
             /* Save the result */
-            articleEntity = new ArticleEntity();
-            articleEntity.setTitle(title);
             articleEntity.setTime(time);
 
             /* Add top 10 words to ArticleEntity */
@@ -100,8 +105,10 @@ public class TextParserServiceImpl implements TextParserService {
             //}
             articleEntity.setWordList(wordEntities);
 
+            System.out.println("1: " + articleEntity);
             /* Save the results in the database */
             titleCheckService.insertArticle(articleEntity);
+            System.out.println("2: " + articleEntity);
             return articleEntity;
         }
         return null;
