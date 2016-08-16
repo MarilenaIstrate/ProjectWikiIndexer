@@ -29,7 +29,6 @@ public class RequestServiceImpl implements RequestService {
         if (conn.getResponseCode() == 200) {
             return conn.getInputStream();
         }
-        System.out.println("Got response code " + conn.getResponseCode());
         return null;
     }
 }

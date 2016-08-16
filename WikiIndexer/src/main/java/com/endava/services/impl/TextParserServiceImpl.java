@@ -38,6 +38,10 @@ public class TextParserServiceImpl implements TextParserService {
 
         /* Replace white spaces in the title */
         title = title.replaceAll("\\s+", "_");
+        /* Replace all '&' to preserve the URL */
+        title = title.replaceAll("&", "%26");
+
+        System.out.println("Searching " + title);
 
         /* Check if the article is in the database */
         ArticleEntity articleEntityDB = articleService.checkTitle(title);
@@ -48,11 +52,15 @@ public class TextParserServiceImpl implements TextParserService {
         /* Get input stream containing the article body */
         InputStream inputStream = requestService.requestTitle(title);
         if (inputStream != null) {
-        	/* Start timer */
+            /* Start timer */
             long time = System.nanoTime();
             /* Get contents of the 'extract' tag */
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
             NodeList nodeList = document.getElementsByTagName("extract");
+            if (nodeList == null || nodeList.item(0) == null) {
+                return null;
+            }
+
             /* Split in words */
             String[] words = nodeList.item(0).getTextContent().split("[^\\w']+");
             /* Close input stream */
@@ -60,9 +68,10 @@ public class TextParserServiceImpl implements TextParserService {
 
             /* Make map that count the words */
             Map<String, Integer> wordsMap = Arrays.stream(words).map(w -> w.toLowerCase())
-                    .filter(w -> w.length() > 0 && w != "" && !commonWordsCheckerService.isCommonWord(w))
+                    .filter(w -> w.length() > 2 && !commonWordsCheckerService.isCommonWord(w))
                     .collect(groupingBy(Function.identity(), summingInt(e -> 1)));
-            
+
+            /* Make ArticleEntity */
             ArticleEntity articleEntity = new ArticleEntity();
             articleEntity.setTitle(title);
             
@@ -83,26 +92,11 @@ public class TextParserServiceImpl implements TextParserService {
                         return wordEntity;
                     })
                     .collect(Collectors.toList());
-            
-            //System.out.println(wordEntities);
-            
-            time = System.nanoTime() - time;
-            ///*
-            //ArticleEntity articleEntity;
-            //*/
-            /* Save the result */
-            articleEntity.setTime(time);
 
+            /* Add time to ArticleEntity */
+            time = System.nanoTime() - time;
+            articleEntity.setTime(time);
             /* Add top 10 words to ArticleEntity */
-            //List<WordEntity> wordEntities = new ArrayList<>();
-            //for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
-            //    WordEntity wordEntity = new WordEntity();
-            //    wordEntity.setWord(entry.getKey());
-            //    wordEntity.setNrAppar(entry.getValue());
-            //    wordEntity.setArticleEntity(articleEntity);
-            //
-            //    wordEntities.add(wordEntity);
-            //}
             articleEntity.setWordList(wordEntities);
 
             /* Save the results in the database */

@@ -1,7 +1,9 @@
 package com.endava.controller;
 
+import com.endava.dto.UserFormDTO;
 import com.endava.model.ArticleEntity;
 import com.endava.model.WordEntity;
+import com.endava.services.MainService;
 import com.endava.services.MultiTitlesParser;
 import com.endava.services.TextParserService;
 import com.endava.services.impl.ArticleServiceImpl;
@@ -9,7 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,51 +24,18 @@ import java.util.stream.Collectors;
 public class TestController {
 
     @Autowired
-    MultiTitlesParser multiTitlesParser;
-
-    @Autowired
-    TextParserService textParserService;
-
-    @Autowired
-    ArticleServiceImpl titleCheckService;
+    MainService mainService;
 
     @RequestMapping(method = RequestMethod.GET)
     public void print() {
-        try {
-            List<String> titles = multiTitlesParser.getTitles("titles.txt");
-            List<ArticleEntity> articleEntities = titles.stream()
-                                    .map(s -> {
-                                        try {
-                                            return textParserService.getTopWords(s);
-                                        } catch (Exception e) { }
-                                        return null;
-                                    })
-                                    .collect(Collectors.toList());
-            System.out.println(articleEntities);
-            /*List<WordEntity> wordEntities = articleEntities.stream()
-                    .flatMap(e -> e.getWordList().stream())
-                    .sorted(new Comparator<WordEntity>() {
-                        @Override
-                        public int compare(WordEntity o1, WordEntity o2) {
-                            return o2.getNrAppar() - o1.getNrAppar();
-                        }
-                    })
-                    .limit(10)
-                    .collect(Collectors.toList());
-            long totalTime = articleEntities.stream()
-                    .map(ArticleEntity::getTime)
-                    .reduce(0l, (a, b) -> a + b);
-            System.out.println(wordEntities);
-            System.out.println("took " + totalTime + "ms");*/
-        } catch (Exception e) {
-            e.printStackTrace();
+        /*UserFormDTO userFormDTO = new UserFormDTO();
+        userFormDTO.setArticleName("Sand");
+        if (userFormDTO.getFileName() == null || userFormDTO.getFileName().isEmpty()) {
+            System.out.println(mainService.getWordsFromTitle(userFormDTO.getArticleName()));
         }
-
-      /*titleCheckService.checkTitle("Beach");
-        ArticleEntity articleEntity = new ArticleEntity();
-        articleEntity.setTitle("Test");
-        articleEntity.setTime(11);
-
-        titleCheckService.insertArticle(articleEntity);*/
+        else {
+            System.out.println(mainService.getWordsFromFile("titles.txt"));
+        }*/
+        System.out.println(mainService.getWordsFromFile("titles.txt"));
     }
 }

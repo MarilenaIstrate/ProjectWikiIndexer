@@ -11,39 +11,31 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
-@Component
-@Scope("prototype")
 public class TextParserThread extends Thread {
 
-    @Autowired
-    private TextParserService textParserService;
-
     private String title;
-    private ArticleEntity articleEntity;
+    private TextParserService textParserService;
+    private List<ArticleEntity> articleEntityes;
 
-    private TextParserThread(String title, ArticleEntity articleEntity) {
+    public TextParserThread(String title, TextParserService textParserService, List<ArticleEntity> articleEntityes) {
         this.title = title;
-        this.articleEntity = articleEntity;
+        this.textParserService = textParserService;
+        this.articleEntityes = articleEntityes;
     }
 
     @Override
     public void run() {
-        /*try {
-            ArticleEntity resultArticleEntity = textParserService.getTopWords(title);
-            synchronized (articleEntity) {
-
-                articleEntity.getWordList().addAll(resultArticleEntity.getWordList())
-                if (articleEntity.getWordList().size() > 0) {
-                    for (WordEntity wordEntity : resultArticleEntity.getWordList()) {
-
-                    }
-                }
+        try {
+            System.out.println("Thread " + Thread.currentThread().getId());
+            if (textParserService == null) {
+                System.out.println("TextParser is null");
             }
-
+            ArticleEntity articleEntity = textParserService.getTopWords(title);
+            articleEntityes.add(articleEntity);
         } catch (Exception e) {
-
-        }*/
+            e.printStackTrace();
+        }
     }
-
 }
