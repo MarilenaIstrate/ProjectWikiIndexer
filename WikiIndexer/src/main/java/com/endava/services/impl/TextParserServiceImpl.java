@@ -1,5 +1,7 @@
 package com.endava.services.impl;
 
+import com.endava.dto.ArticleDTO;
+import com.endava.dto.WordDTO;
 import com.endava.model.ArticleEntity;
 import com.endava.model.WordEntity;
 import com.endava.services.CommonWordsCheckerService;
@@ -34,7 +36,7 @@ public class TextParserServiceImpl implements TextParserService {
     @Autowired
     ArticleServiceImpl articleService;
 
-    public ArticleEntity getTopWords(String title) throws IOException, ParserConfigurationException, SAXException {
+    public ArticleDTO getTopWords(String title) throws IOException, ParserConfigurationException, SAXException {
 
         /* Replace white spaces in the title */
         title = title.replaceAll("\\s+", "_");
@@ -44,9 +46,9 @@ public class TextParserServiceImpl implements TextParserService {
         System.out.println("Searching " + title);
 
         /* Check if the article is in the database */
-        ArticleEntity articleEntityDB = articleService.checkTitle(title);
-        if (articleEntityDB != null) {
-            return articleEntityDB;
+        ArticleDTO articleDTO = articleService.checkTitle(title);
+        if (articleDTO != null) {
+            return articleDTO;
         }
 
         /* Get input stream containing the article body */
@@ -71,12 +73,12 @@ public class TextParserServiceImpl implements TextParserService {
                     .filter(w -> w.length() > 2 && !commonWordsCheckerService.isCommonWord(w))
                     .collect(groupingBy(Function.identity(), summingInt(e -> 1)));
 
-            /* Make ArticleEntity */
-            ArticleEntity articleEntity = new ArticleEntity();
-            articleEntity.setTitle(title);
+            /* Make ArticleDTO */
+            articleDTO = new ArticleDTO();
+            articleDTO.setTitle(title);
             
             /* Make ordered map */
-            List<WordEntity> wordEntities = wordsMap.entrySet().stream().
+            List<WordDTO> wordsDTO = wordsMap.entrySet().stream().
                     sorted(Map.Entry.comparingByValue(new Comparator<Integer>() {
                         @Override
                         public int compare(Integer i1, Integer i2) {
@@ -85,22 +87,22 @@ public class TextParserServiceImpl implements TextParserService {
                     }))
                     .limit(10)
                     .map(entry -> {
-                        WordEntity wordEntity = new WordEntity();
-                        wordEntity.setWord(entry.getKey());
-                        wordEntity.setNrAppar(entry.getValue());
-                        wordEntity.setArticleEntity(articleEntity);
-                        return wordEntity;
+                        WordDTO wordDTO = new WordDTO();
+                        wordDTO.setWord(entry.getKey());
+                        wordDTO.setNrAppar(entry.getValue());
+                        return wordDTO;
                     })
                     .collect(Collectors.toList());
 
-            /* Add time to ArticleEntity */
+            /* Add time to ArticleDTO */
             time = System.nanoTime() - time;
-            /* Add top 10 words to ArticleEntity */
-            articleEntity.setWordList(wordEntities);
+            articleDTO.setTime(time);
+            /* Add top 10 words to ArticleDTO */
+            articleDTO.setWordList(wordsDTO);
 
             /* Save the results in the database */
-            articleService.insertArticle(articleEntity);
-            return articleEntity;
+            articleService.insertArticle(articleDTO);
+            return articleDTO;
         }
         return null;
     }

@@ -1,5 +1,6 @@
 package com.endava.services;
 
+import com.endava.dto.ArticleDTO;
 import com.endava.model.ArticleEntity;
 
 public interface MainService {
@@ -8,12 +9,12 @@ public interface MainService {
      * @param title = title of the article
      * @return top 10 words
      */
-    ArticleEntity getWordsFromTitle(String title);
+    ArticleDTO getWordsFromTitle(String title);
 
     /**
      * Return top 10 words from the articles given in the file
      * @param fileName = name of the file containing article titles
      * @return top 10 words
      */
-    ArticleEntity getWordsFromFile(String fileName);
+    ArticleDTO getWordsFromFile(String fileName);
 }

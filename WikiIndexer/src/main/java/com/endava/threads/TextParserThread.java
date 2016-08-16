@@ -1,5 +1,6 @@
 package com.endava.threads;
 
+import com.endava.dto.ArticleDTO;
 import com.endava.model.ArticleEntity;
 import com.endava.model.WordEntity;
 import com.endava.services.TextParserService;
@@ -16,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-public class TextParserThread implements Callable<ArticleEntity> {
+public class TextParserThread implements Callable<ArticleDTO> {
 
     private String title;
     private TextParserService textParserService;
@@ -27,7 +28,7 @@ public class TextParserThread implements Callable<ArticleEntity> {
     }
 
     @Override
-    public ArticleEntity call() throws Exception {
+    public ArticleDTO call() throws Exception {
         try {
             return textParserService.getTopWords(title);
         } catch (Exception e) {

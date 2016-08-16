@@ -1,5 +1,7 @@
 package com.endava.services.impl;
 
+import com.endava.dto.ArticleDTO;
+import com.endava.dto.WordDTO;
 import com.endava.model.ArticleEntity;
 import com.endava.model.WordEntity;
 import com.endava.services.MainService;
@@ -28,7 +30,7 @@ public class MainServiceImpl implements MainService {
     @Autowired
     private MultiTitlesParser multiTitlesParser;
 
-    public ArticleEntity getWordsFromTitle(String title) {
+    public ArticleDTO getWordsFromTitle(String title) {
 
         try {
             return textParserService.getTopWords(title);
@@ -38,18 +40,18 @@ public class MainServiceImpl implements MainService {
         }
     }
 
-    public ArticleEntity getWordsFromFile(String fileName) {
+    public ArticleDTO getWordsFromFile(String fileName) {
         ExecutorService executorService = Executors.newFixedThreadPool(4);
         try {
-            /* Get ArticleEntity from every article */
-            List<Future<ArticleEntity>> articleEntities = multiTitlesParser.getTitles(fileName).stream()
+            /* Get ArticleDTO from every article */
+            List<Future<ArticleDTO>> articleDTOs = multiTitlesParser.getTitles(fileName).stream()
                     .map(title -> {
                         return executorService.submit(new TextParserThread(title, textParserService));
                     })
                     .collect(Collectors.toList());
             executorService.shutdown();
 
-            List<ArticleEntity> articleEntityList = articleEntities.stream()
+            List<ArticleDTO> articleDTOList = articleDTOs.stream()
                     .map(entity -> {
                         try {
                             return entity.get();
@@ -60,27 +62,27 @@ public class MainServiceImpl implements MainService {
                     })
                     .collect(Collectors.toList());
             /* Get top 10 words */
-            List<WordEntity> wordEntities = articleEntityList.stream()
+            List<WordDTO> wordDTOs = articleDTOList.stream()
                     .filter(e -> e != null)
                     .flatMap(e -> e.getWordList().stream())
-                    .sorted(new Comparator<WordEntity>() {
+                    .sorted(new Comparator<WordDTO>() {
                         @Override
-                        public int compare(WordEntity o1, WordEntity o2) {
+                        public int compare(WordDTO o1, WordDTO o2) {
                             return o2.getNrAppar() - o1.getNrAppar();
                         }
                     })
                     .limit(10)
                     .collect(Collectors.toList());
             /* Get total time */
-            long totalTime = articleEntityList.stream()
-                    .map(ArticleEntity::getTime)
+            long totalTime = articleDTOList.stream()
+                    .map(ArticleDTO::getTime)
                     .reduce(0l, (a, b) -> a + b);
 
             /* Save result */
-            ArticleEntity articleEntity = new ArticleEntity();
-            articleEntity.setTime(totalTime);
-            articleEntity.setWordList(wordEntities);
-            return articleEntity;
+            ArticleDTO articleDTO = new ArticleDTO();
+            articleDTO.setTime(totalTime);
+            articleDTO.setWordList(wordDTOs);
+            return articleDTO;
         } catch (IOException e) {
             return null;
         }

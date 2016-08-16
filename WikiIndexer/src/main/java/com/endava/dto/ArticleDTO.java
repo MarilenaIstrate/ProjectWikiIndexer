@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class ArticleDTO {
     private long time;
+    private String title;
     private List<WordDTO> wordList;
 
     public List<WordDTO> getWordList() {
@@ -18,6 +19,14 @@ public class ArticleDTO {
 
     public void setWordList(List<WordDTO> wordList) {
         this.wordList = wordList;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public long getTime() {
