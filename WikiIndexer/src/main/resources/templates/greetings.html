@@ -12,7 +12,7 @@
     </div>
 
     <div>
-        <form ng-submit="submit()" ng-controller="MainController" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" action="/">
             <table>
                 <tr><td>File to upload:</td><td><input type="file" name="fileName" /></td></tr>
                 <tr><td></td><td><input type="input" name="articleName" /></td></tr>

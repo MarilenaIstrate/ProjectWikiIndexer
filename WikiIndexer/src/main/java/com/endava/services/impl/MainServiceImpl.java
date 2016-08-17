@@ -77,10 +77,15 @@ public class MainServiceImpl implements MainService {
                 .map(ArticleDTO::getTime)
                 .reduce(0l, (a, b) -> a + b);
 
+        boolean source = articleDTOList.stream()
+                .map(ArticleDTO::isFromDatabase)
+                .reduce(false, (a, b) -> a || b);
+
         /* Save result */
         ArticleDTO articleDTO = new ArticleDTO();
         articleDTO.setTime(totalTime);
         articleDTO.setWordList(wordDTOs);
+        articleDTO.setFromDatabase(source);
         return articleDTO;
     }
 }

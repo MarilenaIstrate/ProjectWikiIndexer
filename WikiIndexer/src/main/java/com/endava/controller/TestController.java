@@ -36,19 +36,6 @@ public class TestController {
     public @ResponseBody ArticleDTO print(UserFormDTO userFormDTO) {
 
         MultipartFile file = userFormDTO.getFileName();
-       /* System.out.println(userFormDTO.getArticleName());
-        if (file!= null && !file.isEmpty()) {
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-                String line = null;
-                while((line = reader.readLine()) != null)
-                    System.out.println(line);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-            System.out.println(file.getName());
-        return "greetings";*/
-        System.out.println("HERE");
         ArticleDTO articleDTO = null;
         if (file != null && !file.isEmpty()) {
             articleDTO = mainService.getWordsFromFile(file);
@@ -59,14 +46,5 @@ public class TestController {
             System.out.println(articleDTO);
         }
         return articleDTO;
-        /*UserFormDTO userFormDTO = new UserFormDTO();
-        userFormDTO.setArticleName("Sand");
-        if (userFormDTO.getFileName() == null || userFormDTO.getFileName().isEmpty()) {
-            System.out.println(mainService.getWordsFromTitle(userFormDTO.getArticleName()));
-        }
-        else {
-            System.out.println(mainService.getWordsFromFile("titles.txt"));
-        }*/
-        //System.out.println(mainService.getWordsFromFile("titles.txt"));
     }
 }

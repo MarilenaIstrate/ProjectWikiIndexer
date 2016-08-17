@@ -98,6 +98,7 @@ public class TextParserServiceImpl implements TextParserService {
             /* Add time to ArticleDTO */
             time = System.nanoTime() - time;
             articleDTO.setTime(time);
+            articleDTO.setFromDatabase(false);
             /* Add top 10 words to ArticleDTO */
             articleDTO.setWordList(wordsDTO);
 

@@ -43,6 +43,7 @@ public class ArticleServiceImpl implements ArticleService {
             wordDTOs.add(wordDTO);
         }
         articleDTO.setWordList(wordDTOs);
+        articleDTO.setFromDatabase(true);
         return articleDTO;
     }
 

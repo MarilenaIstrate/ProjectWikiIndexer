@@ -11,6 +11,7 @@ import java.util.List;
 public class ArticleDTO {
     private long time;
     private String title;
+    private boolean fromDatabase;
     private List<WordDTO> wordList;
 
     public List<WordDTO> getWordList() {
@@ -35,6 +36,14 @@ public class ArticleDTO {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public boolean isFromDatabase() {
+        return fromDatabase;
+    }
+
+    public void setFromDatabase(boolean fromDatabase) {
+        this.fromDatabase = fromDatabase;
     }
 
     @Override
