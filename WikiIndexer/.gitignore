@@ -1,6 +1,7 @@
 .idea/
 .mvn/
 out
+bin
 *.iml
 target
 mvn
