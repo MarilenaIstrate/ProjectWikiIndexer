@@ -2,6 +2,7 @@ package com.endava.services;
 
 import com.endava.dto.ArticleDTO;
 import com.endava.model.ArticleEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface MainService {
     /**
@@ -16,5 +17,5 @@ public interface MainService {
      * @param fileName = name of the file containing article titles
      * @return top 10 words
      */
-    ArticleDTO getWordsFromFile(String fileName);
+    ArticleDTO getWordsFromFile(MultipartFile file);
 }

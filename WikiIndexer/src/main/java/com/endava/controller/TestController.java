@@ -8,15 +8,14 @@ import com.endava.services.MultiTitlesParser;
 import com.endava.services.TextParserService;
 import com.endava.services.impl.ArticleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,33 @@ public class TestController {
     MainService mainService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String print() {
+    public String homePage() {
+        return "greetings";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/")
+    public String print(UserFormDTO userFormDTO) {
+
+        MultipartFile file = userFormDTO.getFileName();
+       /* System.out.println(userFormDTO.getArticleName());
+        if (file!= null && !file.isEmpty()) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+                String line = null;
+                while((line = reader.readLine()) != null)
+                    System.out.println(line);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+            System.out.println(file.getName());
+        return "greetings";*/
+        if (file != null && !file.isEmpty()) {
+            System.out.println(mainService.getWordsFromFile(file));
+        }
+        else if (userFormDTO.getArticleName() != null){
+            System.out.println(mainService.getWordsFromTitle(userFormDTO.getArticleName()));
+        }
+
         return "greetings";
         /*UserFormDTO userFormDTO = new UserFormDTO();
         userFormDTO.setArticleName("Sand");

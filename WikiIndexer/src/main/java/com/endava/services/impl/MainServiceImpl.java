@@ -10,8 +10,12 @@ import com.endava.services.TextParserService;
 import com.endava.threads.TextParserThread;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,11 +44,16 @@ public class MainServiceImpl implements MainService {
         }
     }
 
-    public ArticleDTO getWordsFromFile(String fileName) {
+    public ArticleDTO getWordsFromFile(MultipartFile file) {
         ExecutorService executorService = Executors.newFixedThreadPool(4);
-        try {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));) {
+            String line = null;
+            List<String> titles = new ArrayList<>();
+            while((line = reader.readLine()) != null) {
+                titles.add(line);
+            }
             /* Get ArticleDTO from every article */
-            List<Future<ArticleDTO>> articleDTOs = multiTitlesParser.getTitles(fileName).stream()
+            List<Future<ArticleDTO>> articleDTOs = titles.stream()
                     .map(title -> {
                         return executorService.submit(new TextParserThread(title, textParserService));
                     })
