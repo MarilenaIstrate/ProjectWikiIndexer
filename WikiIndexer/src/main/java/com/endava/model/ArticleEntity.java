@@ -56,10 +56,10 @@ public class ArticleEntity {
     public String getCategory() {
         return category;
     }
+
     public void setCategory(String category) {
         this.category = category;
     }
-
 
     public List<WordEntity> getWordList() {
         return wordList;

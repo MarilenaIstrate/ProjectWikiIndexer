@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -27,7 +28,8 @@ public class TestController {
     MainService mainService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public void print() {
+    public String print() {
+        return "greetings";
         /*UserFormDTO userFormDTO = new UserFormDTO();
         userFormDTO.setArticleName("Sand");
         if (userFormDTO.getFileName() == null || userFormDTO.getFileName().isEmpty()) {
@@ -36,6 +38,6 @@ public class TestController {
         else {
             System.out.println(mainService.getWordsFromFile("titles.txt"));
         }*/
-        System.out.println(mainService.getWordsFromFile("titles.txt"));
+        //System.out.println(mainService.getWordsFromFile("titles.txt"));
     }
 }
