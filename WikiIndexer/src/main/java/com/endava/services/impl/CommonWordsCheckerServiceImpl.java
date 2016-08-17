@@ -19,14 +19,16 @@ public class CommonWordsCheckerServiceImpl implements CommonWordsCheckerService 
 
     /* Make a set of the top 100 words */
     @PostConstruct
-    private void CommonWordsCheckerService() throws FileNotFoundException, IOException {
+    private void CommonWordsCheckerService() {
         skipWordsSet = new HashSet<>();
-        BufferedReader reader = new BufferedReader(new FileReader(wordsFile));
-        String word;
-        while ((word = reader.readLine()) != null) {
-            skipWordsSet.add(word);
+        try(BufferedReader reader = new BufferedReader(new FileReader(wordsFile))) {
+            String word;
+            while ((word = reader.readLine()) != null) {
+                skipWordsSet.add(word);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        reader.close();
     }
 
     public boolean isCommonWord(String word) {

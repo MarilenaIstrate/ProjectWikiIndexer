@@ -2,6 +2,7 @@ package com.endava.services.impl;
 
 import com.endava.services.MultiTitlesParser;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,14 +11,16 @@ import java.util.List;
 @Service
 public class MultiTitlesParserImpl implements MultiTitlesParser {
 
-    public List<String> getTitles(String fileName) throws FileNotFoundException, IOException {
+    public List<String> getTitles(MultipartFile fileName) {
         List<String > titles = new ArrayList<>();
-        BufferedReader reader = new BufferedReader(new FileReader(fileName));
-        String line;
-        while((line = reader.readLine()) != null) {
-            titles.add(line);
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(fileName.getInputStream()))) {
+            String line;
+            while((line = reader.readLine()) != null) {
+                titles.add(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        reader.close();
         return titles;
     }
 }

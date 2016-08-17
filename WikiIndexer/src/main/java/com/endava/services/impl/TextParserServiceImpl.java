@@ -38,12 +38,13 @@ public class TextParserServiceImpl implements TextParserService {
 
     public ArticleDTO getTopWords(String title) throws IOException, ParserConfigurationException, SAXException {
 
+        if (title == null)
+            return null;
+
         /* Replace white spaces in the title */
         title = title.replaceAll("\\s+", "_");
         /* Replace all '&' to preserve the URL */
         title = title.replaceAll("&", "%26");
-
-        System.out.println("Searching " + title);
 
         /* Check if the article is in the database */
         ArticleDTO articleDTO = articleService.checkTitle(title);

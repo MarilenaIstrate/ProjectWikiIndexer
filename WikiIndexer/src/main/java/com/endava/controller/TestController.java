@@ -1,5 +1,6 @@
 package com.endava.controller;
 
+import com.endava.dto.ArticleDTO;
 import com.endava.dto.UserFormDTO;
 import com.endava.model.ArticleEntity;
 import com.endava.model.WordEntity;
@@ -32,7 +33,7 @@ public class TestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/")
-    public String print(UserFormDTO userFormDTO) {
+    public @ResponseBody ArticleDTO print(UserFormDTO userFormDTO) {
 
         MultipartFile file = userFormDTO.getFileName();
        /* System.out.println(userFormDTO.getArticleName());
@@ -47,14 +48,17 @@ public class TestController {
         }
             System.out.println(file.getName());
         return "greetings";*/
+        System.out.println("HERE");
+        ArticleDTO articleDTO = null;
         if (file != null && !file.isEmpty()) {
-            System.out.println(mainService.getWordsFromFile(file));
+            articleDTO = mainService.getWordsFromFile(file);
+            System.out.println(articleDTO);
         }
         else if (userFormDTO.getArticleName() != null){
-            System.out.println(mainService.getWordsFromTitle(userFormDTO.getArticleName()));
+            articleDTO = mainService.getWordsFromTitle(userFormDTO.getArticleName());
+            System.out.println(articleDTO);
         }
-
-        return "greetings";
+        return articleDTO;
         /*UserFormDTO userFormDTO = new UserFormDTO();
         userFormDTO.setArticleName("Sand");
         if (userFormDTO.getFileName() == null || userFormDTO.getFileName().isEmpty()) {
