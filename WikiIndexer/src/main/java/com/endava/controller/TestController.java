@@ -11,6 +11,7 @@ import com.endava.services.impl.ArticleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,7 +34,7 @@ public class TestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/")
-    public @ResponseBody ArticleDTO print(UserFormDTO userFormDTO) {
+    public String print(UserFormDTO userFormDTO, Model model) {
 
         MultipartFile file = userFormDTO.getFileName();
         ArticleDTO articleDTO = null;
@@ -45,6 +46,7 @@ public class TestController {
             articleDTO = mainService.getWordsFromTitle(userFormDTO.getArticleName());
             System.out.println(articleDTO);
         }
-        return articleDTO;
+        model.addAttribute("article", articleDTO);
+        return "greetings";
     }
 }

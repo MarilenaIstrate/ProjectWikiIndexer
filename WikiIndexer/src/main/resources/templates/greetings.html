@@ -7,8 +7,9 @@
 
 <body ng-app="myApp">
 
-    <div th:if="${message}">
-        <h2 th:text="${message}"/>
+    <div th:if="${article}">
+        <p th:text="${article}"/>
+        <p th:text="${article.time}"/>
     </div>
 
     <div>
