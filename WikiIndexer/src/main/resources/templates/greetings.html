@@ -9,17 +9,28 @@
 
 <body ng-app="myApp">
 
-    <div th:if="${articles}">
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    //articles reprezinta un vector de articole articles[i].worlist[j].nrAppar(parametri)
+    var articles = /*[[${articles}]]*/ null;
+    
+    alert(articles[0].wordList[2].word);
+    // Aici chemi ce functie javascript vrei tu
+    //makeChart('#ceva',articles);
+    /*]]>*/
+</script>
+
+<div th:if="${articles}">
         <div id='dashboard'>
         </div>
         <p th:text="${articles}"/>
     </div>
 
-    <div>
+    <div class="form" >
         <form method="POST" enctype="multipart/form-data" action="/">
             <table>
+                <tr><td>Article Title:</td><td><input type="input" name="articleName" /></td></tr>
                 <tr><td>File to upload:</td><td><input type="file" name="fileName" /></td></tr>
-                <tr><td></td><td><input type="input" name="articleName" /></td></tr>
                 <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
             </table>
         </form>

@@ -7,6 +7,14 @@ html{
 
 }
 
-body{
-    background-color: lightblue;
+div.form{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+form {
+    position: relative;
+    width  : 350px;
+    height : 350px;
+    margin : 0 auto;
+    background-color:transparent;
 }
