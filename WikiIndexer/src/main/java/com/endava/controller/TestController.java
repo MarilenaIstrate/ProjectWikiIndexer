@@ -37,16 +37,18 @@ public class TestController {
     public String print(UserFormDTO userFormDTO, Model model) {
 
         MultipartFile file = userFormDTO.getFileName();
-        ArticleDTO articleDTO = null;
+        List<ArticleDTO> articlesDTO = null;
         if (file != null && !file.isEmpty()) {
-            articleDTO = mainService.getWordsFromFile(file);
-            System.out.println(articleDTO);
+            articlesDTO = mainService.getWordsFromFile(file);
+            System.out.println(articlesDTO);
         }
         else if (userFormDTO.getArticleName() != null){
-            articleDTO = mainService.getWordsFromTitle(userFormDTO.getArticleName());
-            System.out.println(articleDTO);
+            articlesDTO = mainService.getWordsFromTitle(userFormDTO.getArticleName());
+            System.out.println(articlesDTO);
         }
-        model.addAttribute("article", articleDTO);
+        if (articlesDTO == null)
+            articlesDTO = new ArrayList<>();
+        model.addAttribute("articles", articlesDTO);
         return "greetings";
     }
 }

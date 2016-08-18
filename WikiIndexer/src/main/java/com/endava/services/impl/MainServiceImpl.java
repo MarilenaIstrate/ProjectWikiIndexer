@@ -35,7 +35,24 @@ public class MainServiceImpl implements MainService {
     @Value("${nr_threads}")
     private Integer nrThreads;
 
-    public ArticleDTO getWordsFromTitle(String title) {
+    /**
+     * Get top ten words
+     * @param wordsDTO = list of words
+     * @return top ten words
+     */
+    private List<WordDTO> getTopTenWords(List<WordDTO> wordsDTO) {
+        return wordsDTO.stream()
+                .sorted(new Comparator<WordDTO>() {
+                    @Override
+                    public int compare(WordDTO w1, WordDTO w2) {
+                        return w2.getNrAppar() - w1.getNrAppar();
+                    }
+                })
+                .limit(10)
+                .collect(Collectors.toList());
+    }
+
+    public List<ArticleDTO> getWordsFromTitle(String title) {
 
         try {
             long time = System.nanoTime();
@@ -46,24 +63,18 @@ public class MainServiceImpl implements MainService {
             ArticleDTO articleDTO = new ArticleDTO();
             articleDTO.setFromDatabase(articleDTORet.isFromDatabase());
             articleDTO.setTitle(articleDTORet.getTitle());
-            articleDTO.setWordList(articleDTORet.getWordList().stream()
-                    .sorted(new Comparator<WordDTO>() {
-                        @Override
-                        public int compare(WordDTO w1, WordDTO w2) {
-                            return w2.getNrAppar() - w1.getNrAppar();
-                        }
-                    })
-                    .limit(10)
-                    .collect(Collectors.toList()));
+            articleDTO.setWordList(getTopTenWords(articleDTORet.getWordList()));
             articleDTO.setTime(System.nanoTime()-time);
-            return articleDTO;
+            List<ArticleDTO> returnArticlesDTO = new ArrayList<>();
+            returnArticlesDTO.add(articleDTO);
+            return returnArticlesDTO;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public ArticleDTO getWordsFromFile(MultipartFile fileName) {
+    public List<ArticleDTO> getWordsFromFile(MultipartFile fileName) {
 
         ExecutorService executorService = Executors.newFixedThreadPool(nrThreads);
         long time = System.nanoTime();
@@ -84,6 +95,17 @@ public class MainServiceImpl implements MainService {
                     }
                 })
                 .filter(articleDTO -> articleDTO != null)
+                .collect(Collectors.toList());
+
+        /* List of top ten words per article */
+        List<ArticleDTO> returnArticlesDTO = articlesDTO.stream()
+                .map(article -> {
+                    ArticleDTO articleDTO = new ArticleDTO();
+                    articleDTO.setTitle(article.getTitle());
+                    articleDTO.setFromDatabase(article.isFromDatabase());
+                    articleDTO.setWordList(getTopTenWords(article.getWordList()));
+                    return articleDTO;
+                })
                 .collect(Collectors.toList());
 
         /* Get source */
@@ -118,6 +140,7 @@ public class MainServiceImpl implements MainService {
         articleDTO.setTime(System.nanoTime() - time);
         articleDTO.setWordList(wordsDTO);
         articleDTO.setFromDatabase(source);
-        return articleDTO;
+        returnArticlesDTO.add(articleDTO);
+        return returnArticlesDTO;
     }
 }

@@ -7,9 +7,10 @@
 
 <body ng-app="myApp">
 
-    <div th:if="${article}">
-        <p th:text="${article}"/>
-        <p th:text="${article.time}"/>
+    <div th:if="${articles}">
+        <div id='dashboard'>
+        </div>
+        <p th:text="${articles}"/>
     </div>
 
     <div>
@@ -22,20 +23,6 @@
         </form>
     </div>
 
-    <div ng-controller="MainController">
-        <p>You have submitted {{ var }}</p>
-    </div>
-
-    <div>
-        <ul>
-            <li th:each="file : ${files}">
-                <a th:href="${file.href}" th:text="${file.rel}" />
-            </li>
-        </ul>
-    </div>
-
-    <script src="js/app.js"></script>
-    <script src="js/controllers/MainController.js"></script>
 </body>
 
 </html>
