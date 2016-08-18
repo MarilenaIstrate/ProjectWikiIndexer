@@ -2,25 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <link href="../static/css/mestyle.css.css"
-        th:href ="@{css/mestyle.css}" rel="stylesheet" media = "screen"/>
+    <link href="../static/css/mystyle.css"
+        th:href ="@{css/mystyle.css}" rel="stylesheet" media = "screen"/>
     <script src="../static/js/jquery/jquery-3.1.0.min.js"
             th:src="@{js/jquery/jquery-3.1.0.min.js}"></script>
     <script src="../static/js/d3/d3.min.js"
         th:src="@{js/d3/d3.min.js}"></script>
     <script src="../static/js/chart.js"
             th:src="@{js/chart.js}"></script>
+
+    <script src="../static/js/formValidation.js"
+            th:src="@{js/formValidation.js}"></script>
+
+
 </head>
 
 <body>
 
-    <div>
+    <div class = "form">
+        <p class="start">Welcome to Wiki Indexer</p>
+
         <form method="POST" enctype="multipart/form-data" action="/">
-            <table>
-                <tr><td>File to upload:</td><td><input type="file" name="fileName" /></td></tr>
-                <tr><td></td><td><input type="input" name="articleName" /></td></tr>
-                <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
-            </table>
+            <input type="input" name="articleName" placeholder="Article Title"/>
+            <input type="file" name="fileName" id="file"  />
+            <label for="file">Choose a file</label>
+            <div style="float: right;">
+                <input type="submit" value="Upload file" />
+            </div>
+
         </form>
     </div>
 

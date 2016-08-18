@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <link href="../static/css/mestyle.css.css"
-          th:href ="@{css/mestyle.css}" rel="stylesheet" media = "screen"/>
+    <link href="../static/css/mystyle.css"
+          th:href ="@{css/mystyle.css}" rel="stylesheet" media = "screen"/>
     <script src="../static/js/jquery/jquery-3.1.0.min.js"
             th:src="@{js/jquery/jquery-3.1.0.min.js}"></script>
     <script src="../static/js/d3/d3.min.js"
@@ -17,6 +17,7 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         var articles = /*[[${articles}]]*/ null;
+        //Salveaza variabile din program...este un array de articles
         alert(articles[0].wordList[2].word);
         // Aici chemi ce functie javascript vrei tu
         //
