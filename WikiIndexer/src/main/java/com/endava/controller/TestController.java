@@ -2,24 +2,15 @@ package com.endava.controller;
 
 import com.endava.dto.ArticleDTO;
 import com.endava.dto.UserFormDTO;
-import com.endava.model.ArticleEntity;
-import com.endava.model.WordEntity;
 import com.endava.services.MainService;
-import com.endava.services.MultiTitlesParser;
-import com.endava.services.TextParserService;
-import com.endava.services.impl.ArticleServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/")
@@ -48,7 +39,14 @@ public class TestController {
         }
         if (articlesDTO == null)
             articlesDTO = new ArrayList<>();
+        /*ObjectMapper mapper = new ObjectMapper();
+        String json = null;
+        try {
+            json = mapper.writeValueAsString(articlesDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
         model.addAttribute("articles", articlesDTO);
-        return "greetings";
+        return "chart";
     }
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link href="../static/css/mestyle.css.css"
+          th:href ="@{css/mestyle.css}" rel="stylesheet" media = "screen"/>
+    <script src="../static/js/jquery/jquery-3.1.0.min.js"
+            th:src="@{js/jquery/jquery-3.1.0.min.js}"></script>
+    <script src="../static/js/d3/d3.min.js"
+            th:src="@{js/d3/d3.min.js}"></script>
+    <script src="../static/js/chart.js"
+            th:src="@{js/chart.js}"></script>
+</head>
+
+<body>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var articles = /*[[${articles}]]*/ null;
+        alert(articles[0].wordList[2].word);
+        // Aici chemi ce functie javascript vrei tu
+        //
+        // makeChart('#ceva',articles);
+        /*]]>*/
+    </script>
+
+    <div id ="ceva">
+
+    </div>
+    <div th:if="${articles}">
+        <p th:text="${articles}"></p>
+    </div>
+
+</body>
+
+</html>
