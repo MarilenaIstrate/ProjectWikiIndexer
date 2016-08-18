@@ -18,13 +18,6 @@ public class ArticleEntity {
     @Column(name = "title")
     private String title;
 
-
-    @Column(name = "search_time")
-    private long time;
-
-    @Column(name = "category")
-    private String category;
-
     @OneToMany(fetch = FetchType.EAGER, targetEntity = WordEntity.class, mappedBy = "articleEntity", cascade = {CascadeType.PERSIST})
     private List<WordEntity> wordList;
 
@@ -45,22 +38,6 @@ public class ArticleEntity {
         this.title = title;
     }
 
-    public long getTime() {
-        return time;
-    }
-
-    public void setTime(long time) {
-        this.time = time;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public List<WordEntity> getWordList() {
         return wordList;
     }
@@ -74,8 +51,6 @@ public class ArticleEntity {
         return "ArticleEntity{" +
                 "aid=" + aid +
                 ", title='" + title + '\'' +
-                ", time=" + time +
-                ", category='" + category + '\'' +
                 ", wordList=" + wordList +
                 '}';
     }

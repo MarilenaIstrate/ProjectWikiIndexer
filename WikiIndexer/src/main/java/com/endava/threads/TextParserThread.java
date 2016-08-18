@@ -30,7 +30,7 @@ public class TextParserThread implements Callable<ArticleDTO> {
     @Override
     public ArticleDTO call() throws Exception {
         try {
-            return textParserService.getTopWords(title);
+            return textParserService.getWords(title);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

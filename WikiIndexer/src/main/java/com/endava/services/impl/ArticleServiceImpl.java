@@ -30,7 +30,6 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         ArticleDTO articleDTO = new ArticleDTO();
-        articleDTO.setTime(articleEntity.getTime());
         articleDTO.setTitle(articleEntity.getTitle());
         List<WordDTO> wordDTOs = new ArrayList<WordDTO>();
 
@@ -51,7 +50,6 @@ public class ArticleServiceImpl implements ArticleService {
     public void insertArticle(ArticleDTO articleDTO){
         ArticleEntity articleEntity = new ArticleEntity();
 
-        articleEntity.setTime(articleDTO.getTime());
         articleEntity.setTitle(articleDTO.getTitle());
         List<WordEntity> wordEntities = new ArrayList<WordEntity>();
 

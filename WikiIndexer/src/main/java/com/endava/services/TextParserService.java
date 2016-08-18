@@ -8,12 +8,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 public interface TextParserService {
+
     /**
-     * Prints the top 10 words
+     * Count the words from the article
      * @param title = title of the article
+     * @return article information
      * @throws IOException
      * @throws ParserConfigurationException
      * @throws SAXException
      */
-    ArticleDTO getTopWords(String title) throws IOException, ParserConfigurationException, SAXException;
+    ArticleDTO getWords(String title) throws IOException, ParserConfigurationException, SAXException;
 }

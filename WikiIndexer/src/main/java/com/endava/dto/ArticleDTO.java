@@ -50,6 +50,8 @@ public class ArticleDTO {
     public String toString() {
         return "ArticleDTO{" +
                 "time=" + time +
+                ", title='" + title + '\'' +
+                ", fromDatabase=" + fromDatabase +
                 ", wordList=" + wordList +
                 '}';
     }

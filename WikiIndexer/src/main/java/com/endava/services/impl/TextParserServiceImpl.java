@@ -36,7 +36,7 @@ public class TextParserServiceImpl implements TextParserService {
     @Autowired
     ArticleServiceImpl articleService;
 
-    public ArticleDTO getTopWords(String title) throws IOException, ParserConfigurationException, SAXException {
+    public ArticleDTO getWords(String title) throws IOException, ParserConfigurationException, SAXException {
 
         if (title == null)
             return null;
@@ -55,8 +55,6 @@ public class TextParserServiceImpl implements TextParserService {
         /* Get input stream containing the article body */
         InputStream inputStream = requestService.requestTitle(title);
         if (inputStream != null) {
-            /* Start timer */
-            long time = System.nanoTime();
             /* Get contents of the 'extract' tag */
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
             NodeList nodeList = document.getElementsByTagName("extract");
@@ -77,9 +75,25 @@ public class TextParserServiceImpl implements TextParserService {
             /* Make ArticleDTO */
             articleDTO = new ArticleDTO();
             articleDTO.setTitle(title);
-            
+
+            /* Make list of words */
+            List<WordDTO> wordsDTO = wordsMap.entrySet().stream()
+                    .map(entry -> {
+                        WordDTO wordDTO = new WordDTO();
+                        wordDTO.setWord(entry.getKey());
+                        wordDTO.setNrAppar(entry.getValue());
+                        return wordDTO;
+                    })
+                    .collect(Collectors.toList());
+
+            /* Add words to ArticleDTO */
+            articleDTO.setWordList(wordsDTO);
+
+            /* Add time to ArticleDTO */
+            articleDTO.setFromDatabase(false);
+
             /* Make ordered map */
-            List<WordDTO> wordsDTO = wordsMap.entrySet().stream().
+            /*List<WordDTO> wordsDTO = wordsMap.entrySet().stream().
                     sorted(Map.Entry.comparingByValue(new Comparator<Integer>() {
                         @Override
                         public int compare(Integer i1, Integer i2) {
@@ -93,14 +107,7 @@ public class TextParserServiceImpl implements TextParserService {
                         wordDTO.setNrAppar(entry.getValue());
                         return wordDTO;
                     })
-                    .collect(Collectors.toList());
-
-            /* Add time to ArticleDTO */
-            time = System.nanoTime() - time;
-            articleDTO.setTime(time);
-            articleDTO.setFromDatabase(false);
-            /* Add top 10 words to ArticleDTO */
-            articleDTO.setWordList(wordsDTO);
+                    .collect(Collectors.toList());*/
 
             /* Save the results in the database */
             articleService.insertArticle(articleDTO);
