@@ -5,4 +5,5 @@ bin
 *.iml
 target
 mvn
+mvnw
 mvnw.cmd

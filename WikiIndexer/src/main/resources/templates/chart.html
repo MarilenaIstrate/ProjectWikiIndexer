@@ -27,7 +27,7 @@
         var articles = /*[[${articles}]]*/ null;
         if (articles.length == 0) {
             var errDiv = document.createElement('div');
-            errDiv.innerHTML = 'No good title found';
+            errDiv.innerHTML = 'Please insert a valid title';
             errDiv.id = 'errDiv';
             document.getElementsByTagName('body')[0].appendChild(errDiv);
         }
