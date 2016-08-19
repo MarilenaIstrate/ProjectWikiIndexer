@@ -112,7 +112,7 @@ public class MainServiceImpl implements MainService {
         /* Get source */
         boolean source = articlesDTO.stream()
                 .map(ArticleDTO::isFromDatabase)
-                .reduce(false, (a, b) -> a || b);
+                .reduce(true, (a, b) -> a && b);
 
         /* Count words */
         Map<String, Integer> wordsMap = articlesDTO.stream()
