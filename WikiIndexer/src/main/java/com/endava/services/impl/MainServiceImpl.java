@@ -31,7 +31,7 @@ public class MainServiceImpl implements MainService {
 
     /**
      * Get top ten words
-     * @param wordsDTO = list of words
+     * @param wordsDTO list of words
      * @return list containing top ten words
      */
     private List<WordDTO> getTopTenWords(List<WordDTO> wordsDTO) {

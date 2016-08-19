@@ -2,6 +2,9 @@ package com.endava.dto;
 
 import java.util.List;
 
+/**
+ * Article data transfer object
+ */
 public class ArticleDTO {
     private long time;
     private String title;

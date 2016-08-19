@@ -2,6 +2,9 @@ package com.endava.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Form values data transfer object
+ */
 public class UserFormDTO {
 
     private String articleName;

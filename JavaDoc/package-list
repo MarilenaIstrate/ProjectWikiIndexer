@@ -1,0 +1,8 @@
+com.endava
+com.endava.controller
+com.endava.dto
+com.endava.model
+com.endava.repository
+com.endava.services
+com.endava.services.impl
+com.endava.threads

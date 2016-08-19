@@ -1,6 +1,9 @@
 package com.endava.model;
 import javax.persistence.*;
 
+/**
+ * Word POJO
+ */
 @Entity
 @Table(name = "word")
 public class WordEntity {

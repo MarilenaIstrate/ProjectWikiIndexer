@@ -3,6 +3,9 @@ package com.endava.model;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Article POJO
+ */
 @Entity
 @Table(name = "article")
 public class ArticleEntity {
