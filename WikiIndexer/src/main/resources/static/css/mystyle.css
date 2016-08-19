@@ -17,16 +17,7 @@ div.form{
     left:0;
 }
 
-/*p.start{*/
-    /*font-size:50px;*/
-    /*text-align: center;*/
-    /*color:#FFFAFA;*/
-    /*font-family:Comic Sans MS;*/
-    /*font-style: italic;*/
-/*}*/
-
 p.start{
-    /*background: #4D4D4D;*/
     background: rgba(76, 70, 70, 0.9);
     text-transform: uppercase;
     font-family: 'Open Sans Condensed', sans-serif;
@@ -37,14 +28,6 @@ p.start{
     margin: -30px -30px 30px -30px;
 }
 
-
-/*form {*/
-    /*position: relative;*/
-    /*width  : 350px;*/
-    /*height : 350px;*/
-    /*margin : 0 auto;*/
-    /*background-color:transparent;*/
-/*}*/
 
 .form{
     position:relative;
@@ -102,7 +85,6 @@ p.start{
     padding: 8px 18px;
     text-decoration: none;
     text-transform: uppercase;
-
 }
 
 .form input[type = "file"] + label:hover{
