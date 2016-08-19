@@ -1,9 +1,6 @@
 package com.endava.model;
 import javax.persistence.*;
 
-/**
- * Created by mistrate on 8/11/2016.
- */
 @Entity
 @Table(name = "word")
 public class WordEntity {

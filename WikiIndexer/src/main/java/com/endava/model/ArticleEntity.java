@@ -1,8 +1,5 @@
 package com.endava.model;
 
-/**
- * Created by mistrate on 8/11/2016.
- */
 import javax.persistence.*;
 import java.util.List;
 
@@ -28,7 +25,6 @@ public class ArticleEntity {
     public void setAid(int aid) {
         this.aid = aid;
     }
-
 
     public String getTitle() {
         return title;

@@ -17,7 +17,9 @@ public class CommonWordsCheckerServiceImpl implements CommonWordsCheckerService 
 
     private Set<String> skipWordsSet;
 
-    /* Make a set of the top 100 words */
+    /**
+     * Make a set of top 100 words
+     */
     @PostConstruct
     private void CommonWordsCheckerService() {
         skipWordsSet = new HashSet<>();

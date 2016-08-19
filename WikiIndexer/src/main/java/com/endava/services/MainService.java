@@ -1,16 +1,16 @@
 package com.endava.services;
 
 import com.endava.dto.ArticleDTO;
-import com.endava.model.ArticleEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface MainService {
+
     /**
-     * Return top 10 words from the article given by title
+     * Return list of one article with top 10 words from the article given by title
      * @param title = title of the article
-     * @return top 10 words
+     * @return list of one article with top 10 words
      */
     List<ArticleDTO> getWordsFromTitle(String title);
 

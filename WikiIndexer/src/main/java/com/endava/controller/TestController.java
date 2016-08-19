@@ -3,7 +3,6 @@ package com.endava.controller;
 import com.endava.dto.ArticleDTO;
 import com.endava.dto.UserFormDTO;
 import com.endava.services.MainService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +18,21 @@ public class TestController {
     @Autowired
     MainService mainService;
 
+    /**
+     * Starting page
+     * @return path to the main page
+     */
     @RequestMapping(method = RequestMethod.GET)
     public String homePage() {
         return "mainPage";
     }
 
+    /**
+     * Solves POST method
+     * @param userFormDTO = form values
+     * @param model = model attributes to hold the response
+     * @return path to the chart page
+     */
     @RequestMapping(method = RequestMethod.POST, value = "/")
     public String print(UserFormDTO userFormDTO, Model model) {
 
@@ -31,21 +40,12 @@ public class TestController {
         List<ArticleDTO> articlesDTO = null;
         if (file != null && !file.isEmpty()) {
             articlesDTO = mainService.getWordsFromFile(file);
-            System.out.println(articlesDTO);
         }
         else if (userFormDTO.getArticleName() != null){
             articlesDTO = mainService.getWordsFromTitle(userFormDTO.getArticleName());
-            System.out.println(articlesDTO);
         }
         if (articlesDTO == null)
             articlesDTO = new ArrayList<>();
-        /*ObjectMapper mapper = new ObjectMapper();
-        String json = null;
-        try {
-            json = mapper.writeValueAsString(articlesDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
         model.addAttribute("articles", articlesDTO);
         return "chart";
     }

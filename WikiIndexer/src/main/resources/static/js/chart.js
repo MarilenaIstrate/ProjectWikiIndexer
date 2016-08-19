@@ -4,24 +4,42 @@ var mainArticle = null;
 var wordsChart = null;
 var articlesChart = null;
 
-function onMouseover(e) {
+function onArticleMouseover(e) {
     currentArticle = articlesList[e.dataPointIndex];
     wordsChart.options.data[0].dataPoints = getWords(currentArticle);
     wordsChart.options.title.text = 'Top words in "' + currentArticle.title + '"';
     wordsChart.render();
 }
 
-function onMouseout(e) {
+function onArticleMouseout(e) {
     currentArticle = mainArticle;
     wordsChart.options.data[0].dataPoints = getWords(currentArticle);
-    wordsChart.options.title.text = "Top words in all articles";
+    wordsChart.options.title.text = 'Top words in all articles';
     wordsChart.render();
+}
+
+function onWordMouseover(e) {
+    if (articlesChart) {
+        var word = e.dataPoint.label;
+        articlesChart.options.data[0].dataPoints = getArticlesByWord(word);
+        articlesChart.options.title.text = 'Articles containing "' + word + '"';
+        articlesChart.render();
+    }
+}
+
+function onWordMouseout(e) {
+    if (articlesChart) {
+        var word = e.dataPoint.label;
+        articlesChart.options.data[0].dataPoints = getArticles(articlesList);
+        articlesChart.options.title.text = 'Articles';
+        articlesChart.render();
+    }
 }
 
 function getWords(article) {
     var words = [];
     for (var i in article.wordList) {
-        words.push({label: article.wordList[i].word, y: article.wordList[i].nrAppar});
+        words.push({label: article.wordList[i].word, y: article.wordList[i].nrAppar, mouseover: onWordMouseover, mouseout: onWordMouseout});
     }
     return words;
 }
@@ -32,11 +50,23 @@ function getArticles() {
         var sum = getWords(articlesList[i]).reduce(function (a, b) {
             return a + b.y;
         }, 0);
-        articles.push({label: articlesList[i].title, y: sum, mouseover: onMouseover, mouseout: onMouseout});
+        articles.push({label: articlesList[i].title, y: sum, mouseover: onArticleMouseover, mouseout: onArticleMouseout});
     }
     return articles;
 }
 
+function getArticlesByWord(word) {
+    var articles = [];
+    for (var i = 0; i < articlesList.length - 1; i++) {
+        for (var j in articlesList[i].wordList) {
+            if (articlesList[i].wordList[j].word == word) {
+                articles.push({label: articlesList[i].title, y: articlesList[i].wordList[j].nrAppar});
+                break;
+            }
+        }
+    }
+    return articles;
+}
 
 function makeChart(articleList) {
 
@@ -58,7 +88,6 @@ function makeChart(articleList) {
         articlesDiv.style.width  = "100%";
         document.getElementsByTagName('body')[0].appendChild(articlesDiv);
 
-        console.log(getArticles(articleList));
         /* Make articles pie chart */
         articlesChart = new CanvasJS.Chart("articlesChart", {
             theme: "theme2",

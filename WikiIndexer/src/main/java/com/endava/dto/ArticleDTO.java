@@ -1,13 +1,7 @@
 package com.endava.dto;
 
-import com.endava.model.ArticleEntity;
-import com.endava.model.WordEntity;
-
 import java.util.List;
 
-/**
- * Created by mistrate on 8/16/2016.
- */
 public class ArticleDTO {
     private long time;
     private String title;

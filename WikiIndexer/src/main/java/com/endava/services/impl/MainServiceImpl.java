@@ -3,34 +3,28 @@ package com.endava.services.impl;
 import com.endava.dto.ArticleDTO;
 import com.endava.dto.WordDTO;
 import com.endava.services.MainService;
-import com.endava.services.MultiTitlesParser;
-import com.endava.services.TextParserService;
+import com.endava.services.FileParserService;
+import com.endava.services.WordsCountService;
 import com.endava.threads.TextParserThread;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
 public class MainServiceImpl implements MainService {
 
     @Autowired
-    private TextParserService textParserService;
+    private WordsCountService wordsCountService;
 
     @Autowired
-    private MultiTitlesParser multiTitlesParser;
+    private FileParserService fileParserService;
 
     @Value("${nr_threads}")
     private Integer nrThreads;
@@ -38,7 +32,7 @@ public class MainServiceImpl implements MainService {
     /**
      * Get top ten words
      * @param wordsDTO = list of words
-     * @return top ten words
+     * @return list containing top ten words
      */
     private List<WordDTO> getTopTenWords(List<WordDTO> wordsDTO) {
         return wordsDTO.stream()
@@ -56,7 +50,7 @@ public class MainServiceImpl implements MainService {
 
         try {
             long time = System.nanoTime();
-            ArticleDTO articleDTORet = textParserService.getWords(title);
+            ArticleDTO articleDTORet = wordsCountService.countWords(title);
             if (articleDTORet == null)
                 return null;
             /* Make new article DTO */
@@ -65,6 +59,7 @@ public class MainServiceImpl implements MainService {
             articleDTO.setTitle(articleDTORet.getTitle());
             articleDTO.setWordList(getTopTenWords(articleDTORet.getWordList()));
             articleDTO.setTime(System.nanoTime()-time);
+            /* Make list containing the article */
             List<ArticleDTO> returnArticlesDTO = new ArrayList<>();
             returnArticlesDTO.add(articleDTO);
             return returnArticlesDTO;
@@ -78,14 +73,14 @@ public class MainServiceImpl implements MainService {
 
         ExecutorService executorService = Executors.newFixedThreadPool(nrThreads);
         long time = System.nanoTime();
-        /* Get ArticleDTO from every article */
-        List<Future<ArticleDTO>> articleDTOs = multiTitlesParser.getTitles(fileName).stream()
-                .distinct()
+        /* Start thread from every title */
+        List<Future<ArticleDTO>> articleDTOs = fileParserService.getTitles(fileName).stream()
                 .map(title -> {
-                    return executorService.submit(new TextParserThread(title, textParserService));
+                    return executorService.submit(new TextParserThread(title, wordsCountService));
                 })
                 .collect(Collectors.toList());
         executorService.shutdown();
+        /* Get ArticleDTO for every title */
         List<ArticleDTO> articlesDTO = articleDTOs.stream()
                 .map(entity -> {
                     try {
@@ -105,11 +100,14 @@ public class MainServiceImpl implements MainService {
                     articleDTO.setTitle(article.getTitle());
                     articleDTO.setFromDatabase(article.isFromDatabase());
                     articleDTO.setWordList(getTopTenWords(article.getWordList()));
+                    articleDTO.setTime(System.nanoTime() - time);
                     return articleDTO;
                 })
                 .collect(Collectors.toList());
-        if (returnArticlesDTO.size() == 1)
+        /* Return iff only one article */
+        if (returnArticlesDTO.size() == 1) {
             return returnArticlesDTO;
+        }
 
         /* Get source */
         boolean source = articlesDTO.stream()
