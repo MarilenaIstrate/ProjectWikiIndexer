@@ -4,12 +4,21 @@
 <head>
     <link href="../static/css/mystyle.css"
           th:href ="@{css/mystyle.css}" rel="stylesheet" media = "screen"/>
+    <script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <!--<script src="../static/js/jquery/jquery-3.1.0.min.js.js"
+            th:src="@{js/jquery/jquery-3.1.0.min.js}"></script>-->
     <script src="../static/js/chart.js"
             th:src="@{js/chart.js}"></script>
-    <script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 
 <body>
+
+    <div th:if="${not #lists.isEmpty(articles)}">
+        <div id="wordsChart" style="height: 300px; width: 100%;"></div>
+        <div id="articlesChart" style="height: 300px; width: 100%;"></div>
+        <div id="source" style="height: 300px; width: 100%;"></div>
+        <div id="time" style="height: 100px; width: 100%;"></div>
+    </div>
 
     <script th:inline="javascript">
         /*<![CDATA[*/

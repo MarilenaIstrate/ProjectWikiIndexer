@@ -31,7 +31,7 @@ public class MainServiceImpl implements MainService {
 
     /**
      * Get top ten words
-     * @param wordsDTO = list of words
+     * @param wordsDTO list of words
      * @return list containing top ten words
      */
     private List<WordDTO> getTopTenWords(List<WordDTO> wordsDTO) {
@@ -112,7 +112,7 @@ public class MainServiceImpl implements MainService {
         /* Get source */
         boolean source = articlesDTO.stream()
                 .map(ArticleDTO::isFromDatabase)
-                .reduce(false, (a, b) -> a || b);
+                .reduce(true, (a, b) -> a && b);
 
         /* Count words */
         Map<String, Integer> wordsMap = articlesDTO.stream()

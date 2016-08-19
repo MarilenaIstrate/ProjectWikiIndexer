@@ -6,6 +6,7 @@ var articlesChart = null;
 
 function onArticleMouseover(e) {
     currentArticle = articlesList[e.dataPointIndex];
+    switchSourceTime();
     wordsChart.options.data[0].dataPoints = getWords(currentArticle);
     wordsChart.options.title.text = 'Top words in "' + currentArticle.title + '"';
     wordsChart.render();
@@ -13,6 +14,7 @@ function onArticleMouseover(e) {
 
 function onArticleMouseout(e) {
     currentArticle = mainArticle;
+    switchSourceTime();
     wordsChart.options.data[0].dataPoints = getWords(currentArticle);
     wordsChart.options.title.text = 'Top words in all articles';
     wordsChart.render();
@@ -68,25 +70,34 @@ function getArticlesByWord(word) {
     return articles;
 }
 
+function switchSourceTime() {
+    /* Save source */
+    if (currentArticle.fromDatabase) {
+        document.getElementById('source').innerHTML = 'From database';
+    }
+    else {
+        document.getElementById('source').innerHTML = 'Fresh from Wikipedia';
+    }
+    /* Save seconds */
+    var seconds = currentArticle.time / Math.pow(10, 9);
+    document.getElementById('time').innerHTML = seconds + ' s';
+}
+
 function makeChart(articleList) {
 
     var wordsTitle = null;
     articlesList = articleList;
     mainArticle = articleList[articleList.length - 1];
     currentArticle = mainArticle;
+
+    switchSourceTime();
+
     if (articleList.length == 1) {
         wordsTitle = 'Top words in "' + articleList[0].title + '"';
     }
     /* More than one article */
     else {
         wordsTitle = "Top words in all articles";
-
-        /* Make div for articles */
-        var articlesDiv = document.createElement('div');
-        articlesDiv.id = 'articlesChart';
-        articlesDiv.style.height = "300px";
-        articlesDiv.style.width  = "100%";
-        document.getElementsByTagName('body')[0].appendChild(articlesDiv);
 
         /* Make articles pie chart */
         articlesChart = new CanvasJS.Chart("articlesChart", {
@@ -109,13 +120,6 @@ function makeChart(articleList) {
         });
         articlesChart.render();
     }
-
-    /* Make words div */
-    var wordsDiv = document.createElement('div');
-    wordsDiv.id = 'wordsChart';
-    wordsDiv.style.height = "300px";
-    wordsDiv.style.width  = "100%";
-    document.getElementsByTagName('body')[0].appendChild(wordsDiv);
 
     /* Make words chart */
     wordsChart = new CanvasJS.Chart("wordsChart", {

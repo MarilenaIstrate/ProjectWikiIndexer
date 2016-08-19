@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
 
+/**
+ * Application controller
+ */
 @Controller
 @RequestMapping("/")
 public class TestController {
@@ -29,8 +32,8 @@ public class TestController {
 
     /**
      * Solves POST method
-     * @param userFormDTO = form values
-     * @param model = model attributes to hold the response
+     * @param userFormDTO form values
+     * @param model model attributes to hold the response
      * @return path to the chart page
      */
     @RequestMapping(method = RequestMethod.POST, value = "/")
