@@ -80,6 +80,7 @@ public class MainServiceImpl implements MainService {
         long time = System.nanoTime();
         /* Get ArticleDTO from every article */
         List<Future<ArticleDTO>> articleDTOs = multiTitlesParser.getTitles(fileName).stream()
+                .distinct()
                 .map(title -> {
                     return executorService.submit(new TextParserThread(title, textParserService));
                 })
@@ -107,6 +108,8 @@ public class MainServiceImpl implements MainService {
                     return articleDTO;
                 })
                 .collect(Collectors.toList());
+        if (returnArticlesDTO.size() == 1)
+            return returnArticlesDTO;
 
         /* Get source */
         boolean source = articlesDTO.stream()

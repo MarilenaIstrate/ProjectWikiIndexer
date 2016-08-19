@@ -10,7 +10,5 @@ import com.endava.model.ArticleEntity;
 public interface ArticleService {
     public ArticleDTO checkTitle(String title);
 
-
     public void insertArticle(ArticleDTO articleDTO);
-
 }

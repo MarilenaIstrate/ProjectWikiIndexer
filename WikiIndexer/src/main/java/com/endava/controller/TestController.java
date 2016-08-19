@@ -21,7 +21,7 @@ public class TestController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String homePage() {
-        return "greetings";
+        return "mainPage";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/")

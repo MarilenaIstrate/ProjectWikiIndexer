@@ -6,8 +6,6 @@
           th:href ="@{css/mystyle.css}" rel="stylesheet" media = "screen"/>
     <script src="../static/js/jquery/jquery-3.1.0.min.js"
             th:src="@{js/jquery/jquery-3.1.0.min.js}"></script>
-    <script src="../static/js/d3/d3.min.js"
-            th:src="@{js/d3/d3.min.js}"></script>
     <script src="../static/js/chart.js"
             th:src="@{js/chart.js}"></script>
 </head>
@@ -17,20 +15,12 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         var articles = /*[[${articles}]]*/ null;
-        //Salveaza variabile din program...este un array de articles
-        alert(articles[0].wordList[2].word);
-        // Aici chemi ce functie javascript vrei tu
-        //
-        // makeChart('#ceva',articles);
+        if (articles.length == 0)
+            alert(articles.length);
+        else makeChart(articles);
         /*]]>*/
     </script>
 
-    <div id ="ceva">
-
-    </div>
-    <div th:if="${articles}">
-        <p th:text="${articles}"></p>
-    </div>
 
 </body>
 
