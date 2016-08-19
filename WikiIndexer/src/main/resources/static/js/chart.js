@@ -102,8 +102,7 @@ function makeChart(articleList) {
         /* Make articles pie chart */
         articlesChart = new CanvasJS.Chart("articlesChart", {
             theme: "theme2",
-            backgroundColor:"",
-
+            backgroundColor: "",
             title:{
                 text: "Articles",
                 fontColor: "white",

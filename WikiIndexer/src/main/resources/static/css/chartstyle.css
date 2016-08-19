@@ -1,47 +1,27 @@
-html{
+body {
     background: url('../images/backgroundChart.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size:cover;
     -o-background-size:cover;
     background-size:cover;
-
+    padding: 5%;
 }
 
-#time{
-    background: rgba(76, 70, 70, 0.9);
+.variables {
     font-family: 'Open Sans Condensed', sans-serif;
     color: white;
+    width: 30%;
     font-size: 25px;
-    display: inline-block !important;
-    /*width: 50%;*/
-    /*float :left;*/
-    /*overflow:hidden;*/
-
-
 }
 
-#source{
-    background: rgba(76, 70, 70, 0.9);
-    font-family: 'Open Sans Condensed', sans-serif;
-    color: white;
-    font-size: 25px;
-    display: inline-block !important;
-    /*float:left;*/
-    /*width: 50%;*/
-
-
+#wordsChart {
+    height: 300px;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
-#sides{
-    margin:0;
-}
-#left{
-    float:left;
-    width:75%;
-    overflow:hidden;
-}
-#right{
-    float:left;
-    width:25%;
-    overflow:hidden;
+#articlesChart {
+    height: 300px;
+    width: 70%;
+    float: right;
 }

@@ -16,7 +16,7 @@ public class TextParserThread implements Callable<ArticleDTO> {
     /**
      * Constructor
      * @param title title of the article
-     * @param wordsCountService object that counts words
+     * @param wordsCountService  object that counts words
      */
     public TextParserThread(String title, WordsCountService wordsCountService) {
         this.title = title;

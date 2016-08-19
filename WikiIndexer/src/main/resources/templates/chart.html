@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>-->
     <link href="../static/css/chartstyle.css"
           th:href ="@{css/chartstyle.css}" rel="stylesheet" media = "screen"/>
     <script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -14,18 +14,14 @@
 
 <body>
 
-
-
-
-
+    <a href="/"><button id="back">Back</button></a>
     <div th:if="${not #lists.isEmpty(articles)}">
 
-        <div id="wordsChart" style="height: 300px; width: 100%;"></div>
-        <div class="row">
-            <div id="articlesChart" class="col-md-4"></div>
-            <span id="source" class="col-md-4" style="display: inline-block">babababbab</span>
-            <span id="time" class="col-md-4" style="display: inline-block">Ana are mere</span>
-        </div>
+        <div id="wordsChart"></div>
+        <div id="articlesChart"></div>
+        <div id="source" class="variables"></div><br/>
+        <div id="time" class="variables"></div>
+
     </div>
 
 
@@ -38,10 +34,6 @@
         /*]]>*/
     </script>
 
-
 </body>
-<footer>
-    <div id="left">Hello Left</div>
-    <div id="right">Hellor Right</div>
-</footer>
+
 </html>
