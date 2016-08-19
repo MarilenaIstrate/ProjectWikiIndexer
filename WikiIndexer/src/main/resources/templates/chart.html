@@ -2,8 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <link href="../static/css/mystyle.css"
-          th:href ="@{css/mystyle.css}" rel="stylesheet" media = "screen"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="../static/css/chartstyle.css"
+          th:href ="@{css/chartstyle.css}" rel="stylesheet" media = "screen"/>
     <script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <!--<script src="../static/js/jquery/jquery-3.1.0.min.js.js"
             th:src="@{js/jquery/jquery-3.1.0.min.js}"></script>-->
@@ -13,12 +14,20 @@
 
 <body>
 
+
+
+
+
     <div th:if="${not #lists.isEmpty(articles)}">
+
         <div id="wordsChart" style="height: 300px; width: 100%;"></div>
-        <div id="articlesChart" style="height: 300px; width: 100%;"></div>
-        <div id="source" style="height: 300px; width: 100%;"></div>
-        <div id="time" style="height: 100px; width: 100%;"></div>
+        <div class="row">
+            <div id="articlesChart" class="col-md-4"></div>
+            <span id="source" class="col-md-4" style="display: inline-block">babababbab</span>
+            <span id="time" class="col-md-4" style="display: inline-block">Ana are mere</span>
+        </div>
     </div>
+
 
     <script th:inline="javascript">
         /*<![CDATA[*/
@@ -29,6 +38,10 @@
         /*]]>*/
     </script>
 
-</body>
 
+</body>
+<footer>
+    <div id="left">Hello Left</div>
+    <div id="right">Hellor Right</div>
+</footer>
 </html>

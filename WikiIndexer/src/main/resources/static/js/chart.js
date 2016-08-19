@@ -73,14 +73,14 @@ function getArticlesByWord(word) {
 function switchSourceTime() {
     /* Save source */
     if (currentArticle.fromDatabase) {
-        document.getElementById('source').innerHTML = 'From database';
+        document.getElementById('source').innerHTML = 'Source: ' + 'From database';
     }
     else {
-        document.getElementById('source').innerHTML = 'Fresh from Wikipedia';
+        document.getElementById('source').innerHTML = 'Sournce: ' + 'Fresh from Wikipedia';
     }
     /* Save seconds */
     var seconds = currentArticle.time / Math.pow(10, 9);
-    document.getElementById('time').innerHTML = seconds + ' s';
+    document.getElementById('time').innerHTML = ' Time: ' + seconds + ' s';
 }
 
 function makeChart(articleList) {
@@ -102,8 +102,12 @@ function makeChart(articleList) {
         /* Make articles pie chart */
         articlesChart = new CanvasJS.Chart("articlesChart", {
             theme: "theme2",
+            backgroundColor:"",
+
             title:{
-                text: "Articles"
+                text: "Articles",
+                fontColor: "white",
+                fontSize: 30
             },
             animationEnabled: false,
             toolTip:{
@@ -112,6 +116,7 @@ function makeChart(articleList) {
             },
             data: [
                 {
+                    indexLabelFontColor: "white",
                     type: "pie",
                     explodeOnClick: false,
                     dataPoints: getArticles(articleList)
@@ -122,10 +127,47 @@ function makeChart(articleList) {
     }
 
     /* Make words chart */
+    CanvasJS.addColorSet("greenShades",
+        [//colorSet Array
+
+            "#5A6351",
+            "#2F4F4F",
+            "#008080",
+            "#2E8B57",
+            "#3CB371",
+            "#90EE90",
+            "#37BC61",
+            "#00FF7F",
+            "#00CD00",
+            "#76EE00"
+
+        ]);
+
     wordsChart = new CanvasJS.Chart("wordsChart", {
         theme: "theme2",
+        backgroundColor:"",
+        colorSet:"greenShades",
+        axisX:{
+            title: "Words",
+            titleFontColor: "white",
+            labelFontColor: "white",
+            titleFontWeight: "bold",
+            titleFontFamily: "arial"
+
+        },
+        axisY:{
+            title: "Apparition number",
+            titleFontColor: "white",
+            labelFontColor: "white",
+            titleFontWeight: "bold",
+            titleFontFamily: "arial"
+
+
+        },
         title:{
-            text: wordsTitle
+            text: wordsTitle,
+            fontColor: "white",
+            fontSize: 30,
         },
         animationEnabled: false,
         toolTip:{

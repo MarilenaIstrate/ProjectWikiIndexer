@@ -6,3 +6,42 @@ html{
     background-size:cover;
 
 }
+
+#time{
+    background: rgba(76, 70, 70, 0.9);
+    font-family: 'Open Sans Condensed', sans-serif;
+    color: white;
+    font-size: 25px;
+    display: inline-block !important;
+    /*width: 50%;*/
+    /*float :left;*/
+    /*overflow:hidden;*/
+
+
+}
+
+#source{
+    background: rgba(76, 70, 70, 0.9);
+    font-family: 'Open Sans Condensed', sans-serif;
+    color: white;
+    font-size: 25px;
+    display: inline-block !important;
+    /*float:left;*/
+    /*width: 50%;*/
+
+
+}
+
+#sides{
+    margin:0;
+}
+#left{
+    float:left;
+    width:75%;
+    overflow:hidden;
+}
+#right{
+    float:left;
+    width:25%;
+    overflow:hidden;
+}
